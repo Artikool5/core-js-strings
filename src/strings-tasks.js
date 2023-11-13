@@ -274,8 +274,17 @@ function reverseString(str) {
  *   orderAlphabetically('textbook') => 'bekoottx'
  *   orderAlphabetically('abc123xyz') => '123abcxyz'
  */
-function orderAlphabetically(/* str */) {
-  throw new Error('Not implemented');
+function orderAlphabetically(str) {
+  if (str.length <= 1) return str;
+  const letters = str.split('');
+  for (let i = 0; i < letters.length; i += 1) {
+    for (let j = 0; j < letters.length - 1; j += 1) {
+      if (letters[j].charCodeAt(0) > letters[j + 1].charCodeAt(0)) {
+        [letters[j + 1], letters[j]] = [letters[j], letters[j + 1]];
+      }
+    }
+  }
+  return letters.join('');
 }
 
 /**
@@ -290,8 +299,8 @@ function orderAlphabetically(/* str */) {
  *   containsSubstring('JavaScript is Fun', 'Python') => false
  *   containsSubstring('12345', '34') => true
  */
-function containsSubstring(/* str, substring */) {
-  throw new Error('Not implemented');
+function containsSubstring(str, substring) {
+  return str.includes(substring);
 }
 
 /**
