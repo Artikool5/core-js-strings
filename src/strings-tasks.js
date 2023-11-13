@@ -317,8 +317,9 @@ function containsSubstring(str, substring) {
  *   countVowels('aEiOu') => 5
  *   countVowels('XYZ') => 1
  */
-function countVowels(/* str */) {
-  throw new Error('Not implemented');
+function countVowels(str) {
+  const vowels = str.match(/[aeiuoy]/gi);
+  return vowels ? vowels.length : 0;
 }
 
 /**
@@ -334,8 +335,14 @@ function countVowels(/* str */) {
  *   isPalindrome('apple') => false
  *   isPalindrome('No lemon, no melon') => true
  */
-function isPalindrome(/* str */) {
-  throw new Error('Not implemented');
+function isPalindrome(str) {
+  const loweredStr = str.toLocaleLowerCase();
+  const lattersOnly = loweredStr.match(/[a-z]/g).join('');
+  for (let i = 0; i <= lattersOnly.length - i; i += 1) {
+    if (lattersOnly[i] !== lattersOnly[lattersOnly.length - i - 1])
+      return false;
+  }
+  return true;
 }
 
 /**
