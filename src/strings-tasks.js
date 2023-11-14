@@ -431,8 +431,11 @@ function getStringFromTemplate(firstName, lastName) {
  *   extractNameFromTemplate('Hello, John Doe!') => 'John Doe'
  *   extractNameFromTemplate('Hello, Chuck Norris!') => 'Chuck Norris'
  */
-function extractNameFromTemplate(/* value */) {
-  throw new Error('Not implemented');
+function extractNameFromTemplate(value) {
+  const names = value.split(' ');
+  names.shift();
+  names[1] = names[1].slice(0, names[1].length - 1);
+  return names.join(' ');
 }
 
 /**
@@ -446,8 +449,8 @@ function extractNameFromTemplate(/* value */) {
  *   unbracketTag('<span>') => 'span'
  *   unbracketTag('<a>') => 'a'
  */
-function unbracketTag(/* str */) {
-  throw new Error('Not implemented');
+function unbracketTag(str) {
+  return str.slice(1, str.length - 1);
 }
 
 /**
@@ -465,8 +468,8 @@ function unbracketTag(/* str */) {
  *   ],
  *   'info@gmail.com' => ['info@gmail.com']
  */
-function extractEmails(/* str */) {
-  throw new Error('Not implemented');
+function extractEmails(str) {
+  return str.split(';');
 }
 
 /**
@@ -485,8 +488,39 @@ function extractEmails(/* str */) {
  *    => 'NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm'
  *
  */
-function encodeToRot13(/* str */) {
-  throw new Error('Not implemented');
+function encodeToRot13(str) {
+  const encodeLetter = (char) => {
+    const charCode = char.charCodeAt(0);
+    const START_HIGHER_CASE = 65;
+    const END_HIGHER_CASE = 90;
+    const START_LOWER_CASE = 97;
+    const END_LOWER_CASE = 122;
+
+    const isHigherCase =
+      charCode >= START_HIGHER_CASE && charCode <= END_HIGHER_CASE;
+    const isLowerCase =
+      charCode >= START_LOWER_CASE && charCode <= END_LOWER_CASE;
+
+    if (!isHigherCase && !isLowerCase) return char;
+
+    const differenceFromHigh = Math.abs(END_HIGHER_CASE - (charCode + 13));
+    if (isHigherCase && charCode + 13 > END_HIGHER_CASE) {
+      return String.fromCharCode(START_HIGHER_CASE - 1 + differenceFromHigh);
+    }
+    const differenceFromLow = Math.abs(END_LOWER_CASE - (charCode + 13));
+    if (isLowerCase && charCode + 13 > END_LOWER_CASE) {
+      return String.fromCharCode(START_LOWER_CASE - 1 + differenceFromLow);
+    }
+
+    return String.fromCharCode(charCode + 13);
+  };
+
+  let result = '';
+
+  for (let i = 0; i < str.length; i += 1) {
+    result += encodeLetter(str[i]);
+  }
+  return result;
 }
 
 /**
@@ -513,8 +547,41 @@ function encodeToRot13(/* str */) {
  *   'Q♠' => 50
  *   'K♠' => 51
  */
-function getCardId(/* value */) {
-  throw new Error('Not implemented');
+function getCardId(value) {
+  const rank = Number.isNaN(Number.parseInt(value, 10))
+    ? value[0]
+    : Number.parseInt(value, 10);
+  const suit = value[value.length - 1];
+
+  let suitNumber;
+  switch (suit) {
+    case '♣':
+      suitNumber = 0;
+      break;
+    case '♦':
+      suitNumber = 1;
+      break;
+    case '♥':
+      suitNumber = 2;
+      break;
+    case '♠':
+      suitNumber = 3;
+      break;
+    default:
+      break;
+  }
+
+  const faces = {
+    A: 0,
+    J: 10,
+    Q: 11,
+    K: 12,
+  };
+
+  const number = Object.keys(faces).includes(rank)
+    ? faces[rank]
+    : Number(rank) - 1;
+  return number + 13 * suitNumber;
 }
 
 module.exports = {
